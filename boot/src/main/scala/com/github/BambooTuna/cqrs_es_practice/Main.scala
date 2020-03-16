@@ -11,13 +11,15 @@ import akka.stream.scaladsl.Source
 import akka.util.Timeout
 import com.github.BambooTuna.cqrs_es_practice.model.BankAccountAggregate._
 import com.github.BambooTuna.cqrs_es_practice.model.BankAccountAggregates
+import com.typesafe.config.ConfigFactory
 
 import scala.concurrent.{ExecutionContextExecutor, Future}
 import scala.concurrent.duration._
 
 object Main extends App {
 
-  implicit val system: ActorSystem = ActorSystem("bank-system")
+  implicit val system: ActorSystem =
+    ActorSystem("bank-system", config = ConfigFactory.load())
   implicit val materializer: ActorMaterializer = ActorMaterializer()
   implicit val executionContext: ExecutionContextExecutor = system.dispatcher
 
@@ -30,7 +32,7 @@ object Main extends App {
                             Offset.sequence(seqNr))
 //    readJournal.currentPersistenceIds()
   }
-
+  akka.persistence.query.journal.leveldb.scaladsl.LeveldbReadJournal
   Source
     .repeat(1)
     .throttle(1, 1.seconds)
@@ -42,6 +44,7 @@ object Main extends App {
     }
     .runForeach(a => {
       println("-------------------")
+      val t: EventEnvelope = a
       println(a)
     })
 
@@ -58,9 +61,6 @@ object Main extends App {
   bankAccountAggregatesRef ! WithdrawRequest("2", 200)
   (bankAccountAggregatesRef ? GetBalanceRequest("1")).onComplete(println)
   (bankAccountAggregatesRef ? GetBalanceRequest("2")).onComplete(println)
-
-//  bankAccountAggregatesRef ! CloseBankAccountRequest("1")
-  (bankAccountAggregatesRef ? GetBalanceRequest("1")).onComplete(println)
 
   bankAccountAggregatesRef ! DepositRequest("2", 1)
   bankAccountAggregatesRef ! DepositRequest("2", 2)

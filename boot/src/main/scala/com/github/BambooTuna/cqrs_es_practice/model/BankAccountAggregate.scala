@@ -4,7 +4,8 @@ import akka.actor.ActorLogging
 import akka.persistence.{
   PersistentActor,
   RecoveryCompleted,
-  SaveSnapshotSuccess
+  SaveSnapshotSuccess,
+  SnapshotOffer
 }
 import com.github.BambooTuna.cqrs_es_practice.model.BankAccountAggregate._
 
@@ -37,6 +38,7 @@ class BankAccountAggregate extends PersistentActor with ActorLogging {
 
   private def tryToSaveSnapshot: Unit =
     if (lastSequenceNr % 5 == 0) {
+      println(s"SaveSnapshot: lastSequenceNr=$lastSequenceNr")
       foreachState(saveSnapshot)
     }
 
@@ -49,6 +51,8 @@ class BankAccountAggregate extends PersistentActor with ActorLogging {
       stateOpt = stateOpt.flatMap(_.withdraw(withdraw).toOption)
     case BankAccountClosed(_) =>
       stateOpt = stateOpt.flatMap(_.close().toOption)
+    case SnapshotOffer(_, _state: BankAccount) =>
+      stateOpt = Some(_state)
     case SaveSnapshotSuccess(metadata) =>
       println(s"receiveRecover: SaveSnapshotSuccess succeeded: $metadata")
     case RecoveryCompleted =>
