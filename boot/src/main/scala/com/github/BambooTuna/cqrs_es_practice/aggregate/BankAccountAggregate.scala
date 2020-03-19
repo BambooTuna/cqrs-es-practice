@@ -1,13 +1,9 @@
-package com.github.BambooTuna.cqrs_es_practice.model
+package com.github.BambooTuna.cqrs_es_practice.aggregate
 
 import akka.actor.ActorLogging
-import akka.persistence.{
-  PersistentActor,
-  RecoveryCompleted,
-  SaveSnapshotSuccess,
-  SnapshotOffer
-}
-import com.github.BambooTuna.cqrs_es_practice.model.BankAccountAggregate._
+import akka.persistence.{PersistentActor, RecoveryCompleted, SaveSnapshotSuccess, SnapshotOffer}
+import com.github.BambooTuna.cqrs_es_practice.aggregate.BankAccountAggregate._
+import com.github.BambooTuna.cqrs_es_practice.model.BankAccount
 
 import scala.concurrent.duration._
 

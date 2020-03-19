@@ -1,7 +1,7 @@
 package com.github.BambooTuna.cqrs_es_practice.model
 
 import akka.persistence.journal.{Tagged, WriteEventAdapter}
-import com.github.BambooTuna.cqrs_es_practice.model.BankAccountAggregate.BankAccountEvent
+import com.github.BambooTuna.cqrs_es_practice.aggregate.BankAccountAggregate.BankAccountEvent
 
 class MyTaggingEventAdapter extends WriteEventAdapter {
 

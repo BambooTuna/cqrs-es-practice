@@ -1,12 +1,8 @@
-package com.github.BambooTuna.cqrs_es_practice.model
+package com.github.BambooTuna.cqrs_es_practice.aggregate
 
 import akka.actor.{Actor, Props}
-import akka.cluster.sharding.{
-  ClusterSharding,
-  ClusterShardingSettings,
-  ShardRegion
-}
-import com.github.BambooTuna.cqrs_es_practice.model.BankAccountAggregate.BankAccountCommandRequest
+import akka.cluster.sharding.{ClusterSharding, ClusterShardingSettings, ShardRegion}
+import com.github.BambooTuna.cqrs_es_practice.aggregate.BankAccountAggregate.BankAccountCommandRequest
 
 class BankAccountAggregates extends Actor {
   val shardName = "bank-accounts"

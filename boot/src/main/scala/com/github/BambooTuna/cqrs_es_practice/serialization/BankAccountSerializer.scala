@@ -3,8 +3,8 @@ package com.github.BambooTuna.cqrs_es_practice.serialization
 import java.nio.ByteBuffer
 
 import akka.serialization.SerializerWithStringManifest
-import com.github.BambooTuna.cqrs_es_practice.model.BankAccountAggregate._
 import boopickle.Default._
+import com.github.BambooTuna.cqrs_es_practice.aggregate.BankAccountAggregate._
 
 class BankAccountSerializer extends SerializerWithStringManifest {
   val BankAccountOpenedManifest = classOf[BankAccountOpened].getName
